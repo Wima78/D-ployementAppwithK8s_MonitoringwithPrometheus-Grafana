@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bcm-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bcm
+  template:
+    metadata:
+      labels:
+        app: bcm
+    spec:
+      containers:
+        - name: bcm
+          image: wima7/bcm-app:latest
+          command: ["sh", "-c"]
+          args: ["pnpm next dev --hostname 0.0.0.0 --port 3000"]
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DB_HOST
+              value: "localhost"
+            - name: DB_USER
+              value: "postgres"
+            - name: DB_PASSWORD
+              value: "admin123"
+            - name: DB_NAME
+              value: "bcm"
+            - name: DB_PORT
+              value: "5432"

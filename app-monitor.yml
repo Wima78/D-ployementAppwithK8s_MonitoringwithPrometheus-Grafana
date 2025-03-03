@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: bcm-monitor1
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: bcm
+  namespaceSelector:
+    matchNames:
+      - default
+  endpoints:
+    - port: bcm
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 30s

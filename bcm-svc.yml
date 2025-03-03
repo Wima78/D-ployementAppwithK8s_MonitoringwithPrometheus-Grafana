@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bcm-svc
+  labels:
+    app: bcm
+  annotations:
+    prometheus.io/scrape: 'true'
+spec:
+  type: NodePort
+  selector:
+    app: bcm
+  ports:
+    - port: 3000
+      targetPort: 3000
+      name: bcm

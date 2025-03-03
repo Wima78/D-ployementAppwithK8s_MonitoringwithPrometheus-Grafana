@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: coredns-working-only
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      k8s-app: kube-dns
+  namespaceSelector:
+    matchNames:
+      - kube-system
+  endpoints:
+  - port: metrics
+    interval: 30s
+    scrapeTimeout: 15s
+    relabelings:
+    - sourceLabels: [__meta_kubernetes_pod_ip]
+      regex: 10\.244\.2\.81
+      action: keep

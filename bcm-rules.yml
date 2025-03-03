@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: bcm-alert
+  namespace: monitoring
+  labels:
+    app: kube-prometheus-stack
+    release: prometheus
+spec:
+  groups:
+    - name: bcm-alert
+      rules:
+        - alert: HighRequestRate_BCM
+          expr: rate(http_requests_root_total[5m]) > 10
+          for: 0m
+          labels:
+            app: bcm
+            namespace: monitoring
+          annotations:
+            description: "the request rate to the root path has exceeded 10 requests."
+            summary: "High request rate on root path"

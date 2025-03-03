@@ -1,0 +1,23 @@
+./send-req.sh
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: bcm-alertmanager
+  namespace: monitoring
+spec:
+  route:
+    receiver: 'slack_demo'
+    repeatInterval: 30m
+    routes:
+      - matchers:
+          - name: alertname
+            value: HighRequestRate_BCM
+        repeatInterval: 10
+  receivers:
+    - name: 'slack_demo'
+      slackConfigs:
+        - apiURL:
+            key: webhook
+            name: slack-secret
+          channel: '#bcm-channel'
+          sendResolved: true
